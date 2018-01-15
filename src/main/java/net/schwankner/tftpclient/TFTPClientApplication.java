@@ -41,15 +41,15 @@ public class TFTPClientApplication {
             }
 
             //check if at least one one path is a remote path
-            if (line.getOptionValue("inputFile").contains(":")) {
+            if (line.getOptionValue("inputFile").contains("@")) {
                 //split path in ip and local path
-                String[] inputParts = line.getOptionValue("inputFile").split(":");
+                String[] inputParts = line.getOptionValue("inputFile").split("@");
                 //Call READ
                 System.exit(0);
 
-            } else if (line.getOptionValue("outputFile").contains(":")) {
+            } else if (line.getOptionValue("outputFile").contains("@")) {
                 //split path in ip and local path
-                String[] outputParts = line.getOptionValue("outputFile").split(":");
+                String[] outputParts = line.getOptionValue("outputFile").split("@");
                 //Call WRITE
                 TFTPClient tftpClient = new TFTPClient(
                         outputParts[0],
@@ -63,7 +63,7 @@ public class TFTPClientApplication {
                 System.exit(0);
 
             } else {
-                System.out.println("Input or output path has to be remote e.g. 192.168.1.2:/home/user/file");
+                System.out.println("Input or output path has to be remote e.g. 192.168.1.2@/home/user/file");
                 System.exit(1);
             }
 
