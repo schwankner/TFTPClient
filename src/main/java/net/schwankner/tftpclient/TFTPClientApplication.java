@@ -46,6 +46,13 @@ public class TFTPClientApplication {
                 //split path in ip and local path
                 String[] inputParts = line.getOptionValue("inputFile").split("@");
                 //Call READ
+                TFTPClient tftpClient = new TFTPClient(
+                        inputParts[0],
+                        Integer.parseInt(line.getOptionValue("port", "69")),
+                        Integer.parseInt(line.getOptionValue("timeout", "10")) * 1000,
+                        Integer.parseInt(line.getOptionValue("retries", "5"))
+                );
+                tftpClient.readFile(inputParts[1], line.getOptionValue("outputFile"));
                 System.exit(0);
 
             } else if (line.getOptionValue("outputFile").contains("@")) {
