@@ -55,7 +55,7 @@ public class TFTPClientApplication {
                         outputParts[0],
                         //@todo get default params to work
                         69, //Integer.getInteger(line.getOptionValue("port", "69")),
-                        1000, //Integer.getInteger(line.getOptionValue("timeout", "10")),
+                        5000, //Integer.getInteger(line.getOptionValue("timeout", "10")),
                         5 //Integer.getInteger(line.getOptionValue("retries", "5"))
                 );
                 tftpClient.writeFile(outputParts[1], line.getOptionValue("inputFile"));
