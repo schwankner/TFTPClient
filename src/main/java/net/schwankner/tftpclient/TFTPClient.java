@@ -1,8 +1,10 @@
 package net.schwankner.tftpclient;
 
-import net.schwankner.tftplibrary.*;
+import net.schwankner.tftplibrary.FileSystem;
 import net.schwankner.tftplibrary.Messages.DataMessage;
 import net.schwankner.tftplibrary.Messages.WriteMessage;
+import net.schwankner.tftplibrary.Network;
+import net.schwankner.tftplibrary.ReadOperation;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -31,10 +33,10 @@ public class TFTPClient {
         byte[] inputFile = FileSystem.readFileToBlob(localFile);
 
         //Create data message storage
-        MessageList messageList = new MessageList();
+        ReadOperation readOperation = new ReadOperation();
 
         //Fill data message storage with data from input file
-        messageList.createMessageListFromBin(inputFile);
+        readOperation.createMessageListFromBin(inputFile);
 
         //Create TFTP write request packet
         WriteMessage writeMessage = new WriteMessage(remoteFile);
@@ -43,7 +45,7 @@ public class TFTPClient {
         network.sendPacket(writeMessage.buildBlob(),remoteHost,true);
 
         //Send date packets via TFTP
-        for (DataMessage dataMessage: messageList.getMessageCollection()) {
+        for (DataMessage dataMessage : readOperation.getMessageCollection()) {
             network.sendPacket(dataMessage.buildBlob(),remoteHost,true);
         }
 
