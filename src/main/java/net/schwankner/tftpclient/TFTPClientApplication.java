@@ -55,7 +55,7 @@ public class TFTPClientApplication {
                 TFTPClient tftpClient = new TFTPClient(
                         outputParts[0],
                         //@todo get default params to work
-                        69, //Integer.getInteger(line.getOptionValue("port", "69")),
+                        2069, //Integer.getInteger(line.getOptionValue("port", "69")),
                         10000, //Integer.getInteger(line.getOptionValue("timeout", "10")),
                         5 //Integer.getInteger(line.getOptionValue("retries", "5"))
                 );

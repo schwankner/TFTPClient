@@ -1,6 +1,8 @@
 package net.schwankner.tftpclient;
 
 import net.schwankner.tftplibrary.*;
+import net.schwankner.tftplibrary.Messages.DataMessage;
+import net.schwankner.tftplibrary.Messages.WriteMessage;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -10,11 +12,13 @@ import java.net.UnknownHostException;
  */
 public class TFTPClient {
     private Network network;
+    private InetAddress remoteHost;
 
     public TFTPClient(String remoteHost, int port, int timeout, int retries){
         try {
-            this.network = new Network(InetAddress.getByName(remoteHost),port,timeout,retries);
-            this.network.connect();
+            this.remoteHost=InetAddress.getByName(remoteHost);
+            this.network = new Network(port,timeout,retries);
+            this.network.connect(false);
         } catch (UnknownHostException e){
             System.out.println("Unknown remote host: "+remoteHost);
             System.exit(1);
@@ -29,19 +33,22 @@ public class TFTPClient {
         //Create data message storage
         MessageList messageList = new MessageList();
 
-        //Fill date message storage with data from input file
+        //Fill data message storage with data from input file
         messageList.createMessageListFromBin(inputFile);
 
-        //Create TFTP Request Packet
-        WriteRequest writeRequest = new WriteRequest(remoteFile);
+        //Create TFTP write request packet
+        WriteMessage writeMessage = new WriteMessage(remoteFile);
 
-        //Send TFTP Request Packet
-        network.sendMessage(writeRequest.buildMessage(),false);
+        //Send TFTP write request packet
+        network.sendPacket(writeMessage.buildBlob(),remoteHost,true);
 
         //Send date packets via TFTP
         for (DataMessage dataMessage: messageList.getMessageCollection()) {
-            network.sendMessage(dataMessage.buildMessage(),false);
+            network.sendPacket(dataMessage.buildBlob(),remoteHost,true);
         }
+
+        //Close socket connection
+        network.close();
 
     }
 }
