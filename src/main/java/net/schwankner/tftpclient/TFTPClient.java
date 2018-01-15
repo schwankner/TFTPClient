@@ -1,6 +1,7 @@
 package net.schwankner.tftpclient;
 
 import net.schwankner.tftplibrary.FileSystem;
+import net.schwankner.tftplibrary.Messages.AcknowledgementMessage;
 import net.schwankner.tftplibrary.Messages.DataMessage;
 import net.schwankner.tftplibrary.Messages.ReadMessage;
 import net.schwankner.tftplibrary.Messages.WriteMessage;
@@ -76,6 +77,7 @@ public class TFTPClient {
                 DatagramPacket packet = network.receivePacket();
                 DataMessage dataMessage = new DataMessage(packet.getData());
                 receivedLastDataPackage = receiveOperation.addDatapackage(dataMessage);
+                network.sendPacket(new AcknowledgementMessage(dataMessage.getPacketNumber()).buildBlob(),packet.getAddress(),packet.getPort(),false);
             } catch (TimeoutException e) {
 
             } catch (Exception e){
