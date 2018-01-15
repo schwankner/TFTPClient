@@ -20,10 +20,17 @@ public class TFTPClientApplication {
         options.addOption("p", "port", true, "port for connection with remote host. Default: 69");
         options.addOption("t", "timeout", true, "timeout between sending and retries. Default: 10");
         options.addOption("r", "retries", true, "How many times tftpclient retries to send its messages. Default: 5");
+        options.addOption("v", "verbose", false, "Verbose output for debuging");
+        options.addOption("h", "help", false, "echos this help");
 
         try {
             // parse the command line arguments
             CommandLine line = parser.parse(options, args);
+
+            if (line.hasOption("help")) {
+                helpInformation(options);
+                System.exit(0);
+            }
 
             if (!line.hasOption("inputFile")) {
                 System.out.println("input file has to be set");

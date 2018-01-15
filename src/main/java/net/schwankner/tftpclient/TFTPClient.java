@@ -6,8 +6,8 @@ import net.schwankner.tftplibrary.Messages.DataMessage;
 import net.schwankner.tftplibrary.Messages.ReadMessage;
 import net.schwankner.tftplibrary.Messages.WriteMessage;
 import net.schwankner.tftplibrary.Network;
-import net.schwankner.tftplibrary.SendOperation;
 import net.schwankner.tftplibrary.ReceiveOperation;
+import net.schwankner.tftplibrary.SendOperation;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -35,6 +35,8 @@ public class TFTPClient {
 
     public void writeFile(String remoteFile, String localFile) {
 
+        System.out.println("Write file " + localFile + " to remote server " + remoteHost);
+
         //read file from filesystem
         byte[] inputFile = FileSystem.readFileToBlob(localFile);
 
@@ -55,12 +57,14 @@ public class TFTPClient {
             network.sendPacket(dataMessage.buildBlob(),remoteHost,true);
         }
 
+        System.out.println("File " + localFile + " send with " + sendOperation.getDataSize() + " bytes");
         //Close socket connection
         network.close();
 
     }
 
     public void readFile(String localFile, String remoteFile) {
+        System.out.println("Read file " + remoteFile + " from remote server " + remoteHost);
 
         //Create TFT read request packet
         ReadMessage readMessage = new ReadMessage(remoteFile);
