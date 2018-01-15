@@ -1,6 +1,7 @@
 package net.schwankner.tftpclient;
 
 import org.apache.commons.cli.*;
+
 import java.net.UnknownHostException;
 
 /**
@@ -53,10 +54,9 @@ public class TFTPClientApplication {
                 //Call WRITE
                 TFTPClient tftpClient = new TFTPClient(
                         outputParts[0],
-                        //@todo get default params to work
-                        69, //Integer.getInteger(line.getOptionValue("port", "69")),
-                        5000, //Integer.getInteger(line.getOptionValue("timeout", "10")),
-                        5 //Integer.getInteger(line.getOptionValue("retries", "5"))
+                        Integer.parseInt(line.getOptionValue("port", "69")),
+                        Integer.parseInt(line.getOptionValue("timeout", "10")) * 1000,
+                        Integer.parseInt(line.getOptionValue("retries", "5"))
                 );
                 tftpClient.writeFile(outputParts[1], line.getOptionValue("inputFile"));
 
