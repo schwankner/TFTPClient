@@ -1,7 +1,6 @@
 package net.schwankner.tftpclient;
 
 import org.apache.commons.cli.*;
-
 import java.net.UnknownHostException;
 
 /**
@@ -18,7 +17,7 @@ public class TFTPClientApplication {
         options.addOption("o", "outputFile", true, "path to output file");
         options.addOption("n", "protocol", true, "use tcp or udp as transport protocol. Default: udp");
         options.addOption("p", "port", true, "port for connection with remote host. Default: 69");
-        options.addOption("t", "timeout", true, "timeout between sending and retries. Default: 5");
+        options.addOption("t", "timeout", true, "timeout between sending and retries. Default: 10");
         options.addOption("r", "retries", true, "How many times tftpclient retries to send its messages. Default: 5");
 
         try {
@@ -55,7 +54,7 @@ public class TFTPClientApplication {
                 TFTPClient tftpClient = new TFTPClient(
                         outputParts[0],
                         //@todo get default params to work
-                        2069, //Integer.getInteger(line.getOptionValue("port", "69")),
+                        69, //Integer.getInteger(line.getOptionValue("port", "69")),
                         10000, //Integer.getInteger(line.getOptionValue("timeout", "10")),
                         5 //Integer.getInteger(line.getOptionValue("retries", "5"))
                 );
