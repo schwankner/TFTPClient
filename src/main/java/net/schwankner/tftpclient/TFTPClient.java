@@ -28,7 +28,7 @@ public class TFTPClient {
 
     public void writeFile(String remoteFile, String localFile) {
         //read file from filesystem
-        byte[] inputFile = FileSystem.readFileToBin(localFile);
+        byte[] inputFile = FileSystem.readFileToBlob(localFile);
 
         //Create data message storage
         MessageList messageList = new MessageList();
