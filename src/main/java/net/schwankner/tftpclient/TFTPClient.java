@@ -21,9 +21,11 @@ public class TFTPClient {
     private Network network;
     private InetAddress remoteHost;
     private int remotePort;
+    private boolean verbose;
 
-    public TFTPClient(String remoteHost, int remotePort, int timeout, int retries) {
+    public TFTPClient(String remoteHost, int remotePort, int timeout, int retries, boolean verbose) {
         try {
+            this.verbose = verbose;
             this.remoteHost = InetAddress.getByName(remoteHost);
             this.remotePort = remotePort;
             this.network = new Network(remotePort, timeout, retries);
@@ -93,5 +95,11 @@ public class TFTPClient {
 
         //Close socket connection
         network.close();
+    }
+
+    private void verboseOutput(String message) {
+        if (verbose) {
+            System.out.println(message);
+        }
     }
 }

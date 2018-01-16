@@ -27,6 +27,8 @@ public class TFTPClientApplication {
             // parse the command line arguments
             CommandLine line = parser.parse(options, args);
 
+            boolean verbose = line.hasOption("verbose");
+
             if (line.hasOption("help")) {
                 helpInformation(options);
                 System.exit(0);
@@ -57,7 +59,8 @@ public class TFTPClientApplication {
                         inputParts[0],
                         Integer.parseInt(line.getOptionValue("port", "69")),
                         Integer.parseInt(line.getOptionValue("timeout", "10")) * 1000,
-                        Integer.parseInt(line.getOptionValue("retries", "5"))
+                        Integer.parseInt(line.getOptionValue("retries", "5")),
+                        verbose
                 );
                 tftpClient.readFile(inputParts[1], line.getOptionValue("outputFile"));
                 System.exit(0);
@@ -70,7 +73,9 @@ public class TFTPClientApplication {
                         outputParts[0],
                         Integer.parseInt(line.getOptionValue("port", "69")),
                         Integer.parseInt(line.getOptionValue("timeout", "10")) * 1000,
-                        Integer.parseInt(line.getOptionValue("retries", "5"))
+                        Integer.parseInt(line.getOptionValue("retries", "5")),
+                        verbose
+
                 );
                 tftpClient.writeFile(outputParts[1], line.getOptionValue("inputFile"));
 
