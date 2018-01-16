@@ -76,9 +76,10 @@ public class TFTPClient {
         //Send TFTP read request packet
         network.sendPacket(readMessage.buildBlob(), remoteHost, false);
 
-        //
+        //Create data message storage
         ReceiveOperation receiveOperation = new ReceiveOperation(remoteHost, remotePort, localFile);
 
+        //Receive Packets and write them to file
         boolean receivedLastDataPackage = false;
         while (!receivedLastDataPackage) {
             try {
