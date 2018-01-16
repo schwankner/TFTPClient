@@ -49,7 +49,7 @@ public class TFTPClientApplication {
                 System.exit(1);
             }
 
-            //check if at least one one path is a remote path
+            //check if at least one path is a remote path
             if (line.getOptionValue("inputFile").contains("@")) {
                 //split path in ip and local path
                 String[] inputParts = line.getOptionValue("inputFile").split("@");
@@ -61,7 +61,7 @@ public class TFTPClientApplication {
                         Integer.parseInt(line.getOptionValue("retries", "5")),
                         verbose
                 );
-                tftpClient.readFile(inputParts[1], line.getOptionValue("outputFile"));
+                tftpClient.readFile(line.getOptionValue("outputFile"), inputParts[1]);
                 System.exit(0);
 
             } else if (line.getOptionValue("outputFile").contains("@")) {
