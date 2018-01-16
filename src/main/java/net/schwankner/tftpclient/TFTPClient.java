@@ -20,11 +20,13 @@ import java.util.concurrent.TimeoutException;
 public class TFTPClient {
     private Network network;
     private InetAddress remoteHost;
+    private int remotePort;
 
-    public TFTPClient(String remoteHost, int port, int timeout, int retries) {
+    public TFTPClient(String remoteHost, int remotePort, int timeout, int retries) {
         try {
             this.remoteHost = InetAddress.getByName(remoteHost);
-            this.network = new Network(port, timeout, retries);
+            this.remotePort = remotePort;
+            this.network = new Network(remotePort, timeout, retries);
             this.network.connect(false);
         } catch (UnknownHostException e) {
             System.out.println("Unknown remote host: " + remoteHost);
@@ -54,7 +56,7 @@ public class TFTPClient {
 
         //Send date packets via TFTP
         for (DataMessage dataMessage : sendOperation.getMessageCollection()) {
-            network.sendPacket(dataMessage.buildBlob(),remoteHost,true);
+            network.sendPacket(dataMessage.buildBlob(), remoteHost, true);
         }
 
         System.out.println("File " + localFile + " send with " + sendOperation.getDataSize() + " bytes");
@@ -73,7 +75,7 @@ public class TFTPClient {
         network.sendPacket(readMessage.buildBlob(), remoteHost, false);
 
         //
-        ReceiveOperation receiveOperation = new ReceiveOperation(localFile);
+        ReceiveOperation receiveOperation = new ReceiveOperation(remoteHost, remotePort, localFile);
 
         boolean receivedLastDataPackage = false;
         while (!receivedLastDataPackage) {
@@ -81,10 +83,10 @@ public class TFTPClient {
                 DatagramPacket packet = network.receivePacket();
                 DataMessage dataMessage = new DataMessage(packet.getData());
                 receivedLastDataPackage = receiveOperation.addDatapackage(dataMessage);
-                network.sendPacket(new AcknowledgementMessage(dataMessage.getPacketNumber()).buildBlob(),packet.getAddress(),packet.getPort(),false);
+                network.sendPacket(new AcknowledgementMessage(dataMessage.getPacketNumber()).buildBlob(), packet.getAddress(), packet.getPort(), false);
             } catch (TimeoutException e) {
 
-            } catch (Exception e){
+            } catch (Exception e) {
 
             }
         }

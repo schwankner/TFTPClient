@@ -5,7 +5,7 @@ Client Implementierung der TFTP Spezifikation [RFC 1350](https://tools.ietf.org/
      -i,--inputFile <arg>    path to input file
      -n,--protocol <arg>     use tcp or udp as transport protocol. Default: udp
      -o,--outputFile <arg>   path to output file
-     -p,--port <arg>         port for connection with remote host. Default: 69
-     -r,--retries <arg>      How many times tftpclient retries to send its messages. Default: 5
+     -p,--remotePort <arg>         remotePort for connection with remote host. Default: 69
+     -r,--retries <arg>      how many times tftpclient retries to send its messages. Default: 5
      -t,--timeout <arg>      timeout between sending and retries. Default: 10
-     -v,--verbose            Verbose output for debuging
+     -v,--verbose            verbose output for debuging
