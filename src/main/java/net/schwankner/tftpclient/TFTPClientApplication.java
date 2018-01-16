@@ -1,6 +1,7 @@
 package net.schwankner.tftpclient;
 
 import org.apache.commons.cli.*;
+
 import java.net.UnknownHostException;
 
 /**
@@ -18,11 +19,20 @@ public class TFTPClientApplication {
         options.addOption("n", "protocol", true, "use tcp or udp as transport protocol. Default: udp");
         options.addOption("p", "port", true, "port for connection with remote host. Default: 69");
         options.addOption("t", "timeout", true, "timeout between sending and retries. Default: 10");
-        options.addOption("r", "retries", true, "How many times tftpclient retries to send its messages. Default: 5");
+        options.addOption("r", "retries", true, "how many times tftpclient retries to send its messages. Default: 5");
+        options.addOption("v", "verbose", false, "verbose output for debuging");
+        options.addOption("h", "help", false, "echos this help");
 
         try {
             // parse the command line arguments
             CommandLine line = parser.parse(options, args);
+
+            boolean verbose = line.hasOption("verbose");
+
+            if (line.hasOption("help")) {
+                helpInformation(options);
+                System.exit(0);
+            }
 
             if (!line.hasOption("inputFile")) {
                 System.out.println("input file has to be set");
@@ -45,6 +55,14 @@ public class TFTPClientApplication {
                 //split path in ip and local path
                 String[] inputParts = line.getOptionValue("inputFile").split("@");
                 //Call READ
+                TFTPClient tftpClient = new TFTPClient(
+                        inputParts[0],
+                        Integer.parseInt(line.getOptionValue("port", "69")),
+                        Integer.parseInt(line.getOptionValue("timeout", "10")) * 1000,
+                        Integer.parseInt(line.getOptionValue("retries", "5")),
+                        verbose
+                );
+                tftpClient.readFile(inputParts[1], line.getOptionValue("outputFile"));
                 System.exit(0);
 
             } else if (line.getOptionValue("outputFile").contains("@")) {
@@ -53,10 +71,11 @@ public class TFTPClientApplication {
                 //Call WRITE
                 TFTPClient tftpClient = new TFTPClient(
                         outputParts[0],
-                        //@todo get default params to work
-                        69, //Integer.getInteger(line.getOptionValue("port", "69")),
-                        5000, //Integer.getInteger(line.getOptionValue("timeout", "10")),
-                        5 //Integer.getInteger(line.getOptionValue("retries", "5"))
+                        Integer.parseInt(line.getOptionValue("port", "69")),
+                        Integer.parseInt(line.getOptionValue("timeout", "10")) * 1000,
+                        Integer.parseInt(line.getOptionValue("retries", "5")),
+                        verbose
+
                 );
                 tftpClient.writeFile(outputParts[1], line.getOptionValue("inputFile"));
 
